@@ -1,7 +1,11 @@
 <?php
+
 require ("./env.php");
 $flujo = $_GET['flujo'];
 $proceso = $_GET['proceso'];
+
+
+
 
 mysql_connect($host,$user,$pwd);
 mysql_select_db($bd);
@@ -9,7 +13,6 @@ mysql_select_db($bd);
 $sql = "select * from flujo where proceso='".$proceso."' and flujo='".$flujo."'";
 $resultado = mysql_query($sql);
 $datos =  mysql_fetch_array($resultado);
-
 ?>
 <html>
 	<head>
@@ -25,13 +28,10 @@ $datos =  mysql_fetch_array($resultado);
 	<body>
 		<center>
 		<h1>Sistema Academico</h1>
-		<iframe src="<?php echo $datos["formulario"];?>"></iframe>
+
+		<iframe src="<?php echo $datos["formulario"].'?flujo='.$flujo.'&proceso='.$proceso;?>"></iframe><br>
+
 		<br>
-		<a href="flujo.php?flujo=<?php echo $datos['flujo']?>&proceso=<?php echo $datos['proceso_sgt']?>">Siguiente</a>
 		</center>
-		<!--<form action="flujo.php" method="get">
-			<input type="submit" value="siguiente" name="siguiente">
-		</form>
-		-->
 	</body>
 </html>
