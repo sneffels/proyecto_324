@@ -4,7 +4,7 @@ $flujo = $_GET['flujo'];
 $proceso = $_GET['proceso'];
 
 mysql_connect($host,$user,$pwd);
-mysql_select_db("dbAcademico");
+mysql_select_db($bd);
 
 $sql = "select * from flujo where proceso='".$proceso."' and flujo='".$flujo."'";
 $resultado = mysql_query($sql);

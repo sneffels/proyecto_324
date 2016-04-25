@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
+-- version 4.2.12deb2
 -- http://www.phpmyadmin.net
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 24-04-2016 a las 04:26:45
--- Versión del servidor: 10.1.9-MariaDB
--- Versión de PHP: 7.0.1
+-- Servidor: localhost
+-- Tiempo de generación: 24-04-2016 a las 23:44:59
+-- Versión del servidor: 5.5.42-1
+-- Versión de PHP: 5.6.7-1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 
 --
 -- Base de datos: `dbacademico`
@@ -23,134 +23,58 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `process`
+-- Estructura de tabla para la tabla `flujo`
 --
 
-CREATE TABLE `process` (
-  `idProcess` int(11) NOT NULL,
-  `description` varchar(20) NOT NULL,
-  `type` varchar(2) DEFAULT NULL,
-  `form` varchar(30) NOT NULL,
-  `idRol` varchar(5) DEFAULT NULL,
-  `idFollowingProcess` int(11) DEFAULT NULL
+CREATE TABLE IF NOT EXISTS `flujo` (
+  `flujo` varchar(4) NOT NULL,
+  `proceso` varchar(4) NOT NULL,
+  `tipo` varchar(3) NOT NULL,
+  `rol` varchar(8) NOT NULL,
+  `proceso_sgt` varchar(4) NOT NULL,
+  `formulario` varchar(19) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcado de datos para la tabla `process`
+-- Volcado de datos para la tabla `flujo`
 --
 
-INSERT INTO `process` (`idProcess`, `description`, `type`, `form`, `idRol`, `idFollowingProcess`) VALUES
-(1, 'sol certf egreso', 'p', 'solicitud.php', '2', 2),
-(2, 'verificacion', 'pr', 'verificacion.php', '2', 2);
+INSERT INTO `flujo` (`flujo`, `proceso`, `tipo`, `rol`, `proceso_sgt`, `formulario`) VALUES
+('f1', 'P1', 'I', 'alumno', 'P2', 'index.php'),
+('f1', 'P2', 'P', 'alumno', 'P3', 'inscripcion.php'),
+('f1', 'P3', 'P', 'maquina', 'P4', 'codigo.php'),
+('f1', 'P4', 'PR', 'maquina', '-', 'pregunta1'),
+('f1', 'P5', 'P', 'alumno', 'P6', 'solicita_mat.php'),
+('f1', 'P6', 'P', 'maquina', 'P7', 'verifica_max.php'),
+('f1', 'P7', 'PR', 'maquina', '-', 'pregunta2'),
+('f1', 'P8', 'P', 'maquina', 'P9', 'verifica_cupo.php'),
+('f1', 'P9', 'PR', 'maquina', '-', 'pregunta3'),
+('f1', 'P10', 'P', 'maquina', 'P11', 'agrega_mat.php'),
+('f1', 'P11', 'PR', 'maquina', '-', 'pregunta4'),
+('f1', 'P12', 'P', 'maquina', 'P13', 'imprime_boleta.php'),
+('f1', 'P13', 'F', 'maquina', '-', '-');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `rol`
+-- Estructura de tabla para la tabla `usuario`
 --
 
-CREATE TABLE `rol` (
-  `idRol` varchar(5) NOT NULL,
-  `description` varchar(15) DEFAULT NULL
+CREATE TABLE IF NOT EXISTS `usuario` (
+  `iduser` varchar(10) NOT NULL,
+  `nombre` varchar(15) NOT NULL,
+  `pwd` varchar(10) NOT NULL,
+  `carnet` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcado de datos para la tabla `rol`
+-- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `rol` (`idRol`, `description`) VALUES
-('1', 'estudiante'),
-('2', 'secretaria'),
-('3', 'decanato');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `transactions`
---
-
-CREATE TABLE `transactions` (
-  `idUser` varchar(10) DEFAULT NULL,
-  `idProcess` int(11) DEFAULT NULL,
-  `state` varchar(2) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `users`
---
-
-CREATE TABLE `users` (
-  `idUser` varchar(10) NOT NULL,
-  `pwd` varchar(15) DEFAULT NULL,
-  `idRol` varchar(5) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `users`
---
-
-INSERT INTO `users` (`idUser`, `pwd`, `idRol`) VALUES
-('ana', '123456', '1'),
-('decanato1', '123456', '3'),
-('juan', '123456', '1'),
-('pedro', '123456', '1'),
-('secre1', '123456', '2');
-
---
--- Índices para tablas volcadas
---
-
---
--- Indices de la tabla `process`
---
-ALTER TABLE `process`
-  ADD PRIMARY KEY (`idProcess`),
-  ADD KEY `idRol` (`idRol`);
-
---
--- Indices de la tabla `rol`
---
-ALTER TABLE `rol`
-  ADD PRIMARY KEY (`idRol`);
-
---
--- Indices de la tabla `transactions`
---
-ALTER TABLE `transactions`
-  ADD KEY `idUser` (`idUser`),
-  ADD KEY `idProcess` (`idProcess`);
-
---
--- Indices de la tabla `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`idUser`),
-  ADD KEY `idRol` (`idRol`);
-
---
--- Restricciones para tablas volcadas
---
-
---
--- Filtros para la tabla `process`
---
-ALTER TABLE `process`
-  ADD CONSTRAINT `process_ibfk_1` FOREIGN KEY (`idRol`) REFERENCES `rol` (`idRol`);
-
---
--- Filtros para la tabla `transactions`
---
-ALTER TABLE `transactions`
-  ADD CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`idUser`) REFERENCES `users` (`idUser`),
-  ADD CONSTRAINT `transactions_ibfk_2` FOREIGN KEY (`idProcess`) REFERENCES `process` (`idProcess`);
-
---
--- Filtros para la tabla `users`
---
-ALTER TABLE `users`
-  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`idRol`) REFERENCES `rol` (`idRol`);
+INSERT INTO `usuario` (`iduser`, `nombre`, `pwd`, `carnet`) VALUES
+('AG9102122', 'ana garcia', '123456', '9102122'),
+('JV9102020', 'juan vargas', '123456', '9102020'),
+('RV9104020', 'raul velasco', '123456', '9104020');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
