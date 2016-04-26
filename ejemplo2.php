@@ -19,7 +19,7 @@
    
         <h2>Inscripcion</h2>
 
-
+        <input type="text" id="recibir" value="hola asdsadsa" />
         <button onclick="mostrar()">ver</button>      
         <!--aca recibe los datos en nuestro caso si verifica todo correcto un link-->  
         <div id="resultado"></div>
@@ -34,8 +34,8 @@
                 var parametro = 'datos';
 
                  $.ajax({
-                    type: 'POST',
-                    url: 'enviar.php',
+                    type: 'GET',
+                    url: 'enviar2.php?valor='+document.getElementById('recibir').value,
                     data: parametro,
                     beforeSend: function () {
                         $("#resultado").html("esperando...");
