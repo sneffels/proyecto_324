@@ -79,3 +79,22 @@ INSERT INTO `usuario` (`iduser`, `nombre`, `pwd`, `carnet`) VALUES
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+CREATE TABLE IF NOT EXISTS `materia` (
+  `nombre` varchar(10) NOT NULL,
+  `maxcupo` INT NOT NULL,
+  `cupoactual` INT NOT NULL,
+
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO `materia` (`nombre`, `maxcupo`, `cupoactual`) VALUES
+('INF-161', 40, 0),
+('INF-272', 50, 0),
+('INF-121', 100, 0);
+
+CREATE TABLE IF NOT EXISTS `materia_alumno` (
+  `nombre` varchar(4) NOT NULL,
+  `materia` INT NOT NULL,
+
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
