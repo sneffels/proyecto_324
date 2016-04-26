@@ -24,19 +24,17 @@
 			
 
 			<label>Codigo</label>	<input type="text" name="user" value="<?php echo $_GET['user'];?>">
-			<input type="submit" value="mandar" />
+			<button onclick="realizaProceso()">mandar</button>
 		</form> 
 	</div>
 </body>
-<script type="text/javascript" src="/js/jquery.js"></script>
+<script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
  
 <script>
-		function realizaProceso(valorCaja1, valorCaja2){
-        	var parametros = {
-            	    "valorCaja1" : valorCaja1,
-                	"valorCaja2" : valorCaja2
-        };
-        $.ajax({
+		function realizaProceso(){
+        	var valor =document.getElementsByTagName('user').value;
+        	alert(valor);
+        	/*$.ajax({
                 data:  parametros,
                 url:   'ejemplo_ajax_proceso.php',
                 type:  'post',
@@ -46,6 +44,6 @@
                 success:  function (response) {
                         $("#resultado").html(response);
                 }
-        });
-}
+        	});*/
+		}
 </script>

@@ -44,14 +44,14 @@
         }
         ?>
 
-        
+        <div id="resultado"></div>
         
         
         
     </form>
 </div>
 </body>
-<script type="text/javascript" src="/js/jquery.js"></script>
+<script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
 
 <script>
     function realizaProceso(usuario, materia,proceso, flujo,formulario){
@@ -70,7 +70,7 @@
                 $("#resultado").html("Verificando materia...");
             },
             success:  function (response) {
-                $("#resultado").html(response);
+                $("#resultado").html("response");
             }
         });
     }
