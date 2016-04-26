@@ -88,9 +88,9 @@ CREATE TABLE IF NOT EXISTS `materia` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO `materia` (`nombre`, `maxcupo`, `cupoactual`) VALUES
-('INF-161', 40, 0),
-('INF-272', 50, 0),
-('INF-121', 100, 0);
+('INF161', 40, 0),
+('INF272', 50, 0),
+('INF121', 100, 0);
 
 CREATE TABLE IF NOT EXISTS `materia_alumno` (
   `nombre` varchar(4) NOT NULL,

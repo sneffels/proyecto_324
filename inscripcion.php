@@ -18,23 +18,62 @@
 	<div align="center">
 		<form >
 			<h2>Inscripcion</h2>
-			
-			<?php echo $_GET['flujo'];?>
-			<?php echo $_GET['proceso'];?>
-			
+
+
+			<?php $_GET['user']='AG9102122';
+			$_GET['materia']='INF161';
+			?>
+
 
 			<label>Codigo</label>	<input type="text" name="user" value="<?php echo $_GET['user'];?>">
-			<button onclick="realizaProceso()">mandar</button>
+			<input type="submit" value="mandar"  />
 		</form> 
+		
+		<?php
+		require ("./env.php");
+		session_start();
+
+		$conn=mysqli_connect($host,$user,$pwd,$bd);
+
+		$materia=$_GET['materia'];
+		$usuario=$_GET['user'];
+		
+		$sql="select * from materia where nombre ='$materia'";
+		$query=mysqli_query($conn,$sql);
+		$result=mysqli_fetch_array($query);
+		
+		$maxCupo=$result['maxcupo'];
+		$cupoActual=$result['cupoactual'];
+
+		echo $maxCupo." ".$cupoActual;
+		
+		if($cupoActual+1>$maxCupo)
+			echo "No hay cupo";
+		else
+		{
+			$nuevocupo=$cupoActual+1;
+			echo $nuevocupo;
+			$sql2="insert into materia_alumno('$usuario','$materia')";
+			$sql3="update materia set cupoactual='$nuevocupo' where nombre='$materia'";
+			mysqli_query($conn,$sql2);
+			mysqli_query($conn,$sql3);
+
+
+			echo "inscripcion realizada";
+		}
+		
+		?>
 	</div>
 </body>
-<script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="/js/jquery.js"></script>
  
 <script>
-		function realizaProceso(){
-        	var valor =document.getElementsByTagName('user').value;
-        	alert(valor);
-        	/*$.ajax({
+		function realizaProceso(valorCaja1, valorCaja2){
+        	var parametros = {
+            	    "valorCaja1" : valorCaja1,
+                	"valorCaja2" : valorCaja2
+        };
+        $.ajax({
                 data:  parametros,
                 url:   'ejemplo_ajax_proceso.php',
                 type:  'post',
@@ -44,6 +83,6 @@
                 success:  function (response) {
                         $("#resultado").html(response);
                 }
-        	});*/
-		}
+        });
+}
 </script>
