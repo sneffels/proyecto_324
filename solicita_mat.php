@@ -1,4 +1,4 @@
-
+<html>
 <head>
     <style>
         input{
@@ -16,62 +16,55 @@
 </head>
 <body>
 <div align="center">
-    <form >
+ 
         <h2>Inscripcion</h2>
-
-        <?php
-        require ("./env.php");
-        session_start();
-        mysql_connect($host,$user,$pwd);
-        mysql_select_db($bd);
-
-        $flujo=$_GET['flujo'];
-        $proceso=$_GET['proceso'];
-        $usuario=$_GET['user'];
-        
-        $sqlmaterias="select * from materias";
-        $materias=mysql_query($sqlmaterias);
-        
-        $sqlflujo="select * from flujo where flujo='$flujo' and proceso='$proceso'";
-        $siguiente=mysql_query($sqlflujo);
-
-        while ($materia=mysql_fetch_array($materias))
-        {
-
-            echo $materia['nombre'];
-            echo '<input class="submit" type="button" value="adicionar" onclick="
-            realizaProceso('.$usuario.','.$materia['nombre'].','.$siguiente['proceso_sgte'].','.$siguiente['flujo'].','.$siguiente['formulario'].')">';
-        }
+        <?php 
+            require ("./env.php");
+            mysql_connect($host,$user,$pwd);
+            mysql_select_db($bd);            
+            $sql="select * from materia";
+            $resultado=mysql_query($sql);
+           
+            echo "<table border='1'>";  
+            echo "<tr><td>materia</td><td>anadir materia</td><tr>";
+            $i=1;
+            while($row=mysql_fetch_array($resultado)){
+                echo "<tr>";
+                echo "<td>".$row['nombre']."</td><td><div id='resultado".$i."'>sads</div></td>";
+                echo "</tr>";
+                $i++;
+            }
+            echo "</table>";
         ?>
-
-        <div id="resultado"></div>
+        <button onclick="mostrar()">verificar</button>        
         
-        
-        
-    </form>
+   
 </div>
 </body>
-<script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="jquery-2.1.1.min.js"></script>
 
 <script>
-    function realizaProceso(usuario, materia,proceso, flujo,formulario){
-        var parametros = {
-            "usuario" :usuario,
-            "materia" : materia,
-            "proceso" : proceso,
-            "flujo"   : flujo
-            
+
+    function mostrar() {
+            var parametro="a";
+            var ruta="enviar2.php";
+            for (var i = 1; i <=3; i++) {
+             $.ajax({
+                    type: 'GET',
+                    url: ruta,
+                    data: parametro,
+                    beforeSend: function () {
+                        //alert(ruta);
+                        $("#resultado"+i).html("esperando...");
+                    },
+                    error: function() {
+                        $("#resultado"+i).html("error...");
+                    },
+                    success: function( data ) {                    
+                        $('#resultado'+i).html( data );
+                    }
+            });
         };
-        $.ajax({
-            data:  parametros,
-            url:   formulario,
-            type:  'post',
-            beforeSend: function () {
-                $("#resultado").html("Verificando materia...");
-            },
-            success:  function (response) {
-                $("#resultado").html("response");
-            }
-        });
     }
 </script>
+</html>

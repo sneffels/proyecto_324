@@ -1,4 +1,21 @@
-<>
+<?php 
+	require ("./env.php");
+	mysql_connect($host,$user,$pwd);
+	mysql_select_db($bd);
+	$flujo=$_GET['flujo'];
+	$proceso=$_GET['proceso'];
+	$sql="select * from flujo where flujo='$flujo' and proceso='$proceso'";
+	$consulta=mysql_query($sql);
+	$datos=mysql_fetch_array($consulta);
+	$flujo_sgt=$datos['proceso_sgt'];
+	$sql="select * from flujo where flujo='$flujo' and proceso='$flujo_sgt'";
+	$consulta=mysql_query($sql);
+	$datos=mysql_fetch_array($consulta);
+	$formulario=$datos['formulario'];
+
+?>
+
+<html>
 <head>
 		<style>
 			input{
@@ -16,73 +33,45 @@
 	</head>
 <body>	
 	<div align="center">
-		<form >
+		
 			<h2>Inscripcion</h2>
 
 
-			<?php $_GET['user']='AG9102122';
-			$_GET['materia']='INF161';
-			?>
+			
 
 
-			<label>Codigo</label>	<input type="text" name="user" value="<?php echo $_GET['user'];?>">
-			<input type="submit" value="mandar"  />
-		</form> 
+			<label>Codigo</label>	<input type="text" id="user" value="<?php echo $_GET['user'];?>">
+			<button id="btn" onclick="verificarcodigo()">mandar</button>
+			sasad	
+			<div id="resultado"></div>
 		
-		<?php
-		require ("./env.php");
-		session_start();
-
-		$conn=mysqli_connect($host,$user,$pwd,$bd);
-
-		$materia=$_GET['materia'];
-		$usuario=$_GET['user'];
 		
-		$sql="select * from materia where nombre ='$materia'";
-		$query=mysqli_query($conn,$sql);
-		$result=mysqli_fetch_array($query);
-		
-		$maxCupo=$result['maxcupo'];
-		$cupoActual=$result['cupoactual'];
-
-		echo $maxCupo." ".$cupoActual;
-		
-		if($cupoActual+1>$maxCupo)
-			echo "No hay cupo";
-		else
-		{
-			$nuevocupo=$cupoActual+1;
-			echo $nuevocupo;
-			$sql2="insert into materia_alumno('$usuario','$materia')";
-			$sql3="update materia set cupoactual='$nuevocupo' where nombre='$materia'";
-			mysqli_query($conn,$sql2);
-			mysqli_query($conn,$sql3);
-
-
-			echo "inscripcion realizada";
-		}
-		
-		?>
 	</div>
 </body>
-<script type="text/javascript" src="/js/jquery.js"></script>
+<script type="text/javascript" src="jquery-2.1.1.min.js"></script>
  
 <script>
-		function realizaProceso(valorCaja1, valorCaja2){
-        	var parametros = {
-            	    "valorCaja1" : valorCaja1,
-                	"valorCaja2" : valorCaja2
-        };
-        $.ajax({
-                data:  parametros,
-                url:   'ejemplo_ajax_proceso.php',
-                type:  'post',
-                beforeSend: function () {
-                        $("#resultado").html("Procesando, espere por favor...");
-                },
-                success:  function (response) {
-                        $("#resultado").html(response);
-                }
-        });
-}
+		function verificarcodigo(){
+			var parametro="a";
+			var ruta="<?php echo $formulario;?>";
+			//alert(ruta);
+			 $.ajax({
+                    type: 'GET',
+
+                    url: ruta+'?u='+document.getElementById('user').value,
+                    data: parametro,
+                    beforeSend: function () {
+                        $("#resultado").html("esperando...");
+                    },
+                    error: function() {
+                        $("#resultado").html("error...");
+                    },
+                    success: function( data ) {                    
+                        $('#resultado').html( data );
+                    }
+                 });
+
+		}
+
 </script>
+</html>
